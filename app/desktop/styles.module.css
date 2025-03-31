@@ -1,0 +1,126 @@
+.main{
+  display: block;
+}
+
+#root {
+  position: relative;
+    display: block;
+    width: 100dvw;
+    height: 100dvh;
+    overflow: hidden;
+}
+.mainAppWrapper.zoomedOut {
+  --appScaleX: calc(var(--window-width) / 3506);
+  --appScaleY: calc(var(--window-height) / 1972);
+  --appScale: min(var(--appScaleX), var(--appScaleY));
+}
+.mainAppWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3506px;
+  height: 1972px;
+  transform: translate(-50%, -50%) scale(var(--appScale));
+  transition: transform .9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.mainAppWrapper::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3506px;
+  height: 1972px;
+  background: url('/scene2-d14f31-compressed-da7d54.jpg') #000;
+  background-size: 3506px 1972px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  box-shadow: inset 0 0 50px #fff, inset 20px 0 80px #fff, inset -20px 0 80px #fff, inset 20px 0 300px #fff, inset -20px 0 300px #fff, 0 0 50px #fff, -10px 0 80px #fff, 10px 0 80px #fff;
+  filter: blur(10px);
+}
+
+.onOffButtons {
+  position: absolute;
+  top: 1346px;
+  left: 1895px;
+  width: 140px;
+  height: 60px;
+  z-index: 5;
+  display: grid;
+  grid-template-areas: "stack";
+  cursor: pointer;
+}
+
+.computerScreen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 600px;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 10px solid var(--color-black);
+}
+
+.appScale {
+  transform: scale(var(--appScale));
+  opacity: 1;
+  transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1),
+              opacity 1s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+.appScaleOff {
+  transform: scale(calc(var(--appScale) * 0.8));
+  opacity: 0;
+}
+
+.scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.2) 0px,
+    rgba(0, 0, 0, 0.2) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+.crtCurve {
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+}
+
+.monitorFrame {
+  background: #d4d4d4;
+  border: 8px solid #e5e5e5;
+  border-bottom-width: 32px;
+  box-shadow: 
+    inset 0 0 10px rgba(0,0,0,0.2),
+    0 10px 30px rgba(0,0,0,0.3);
+}
+
+.monitorScreen {
+  background: black;
+  overflow: hidden;
+  position: relative;
+  border-radius: 4px;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
