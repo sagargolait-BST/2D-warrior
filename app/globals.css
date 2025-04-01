@@ -677,8 +677,8 @@
 /* On/Off Buttons */
 .on-off-buttons {
   position: absolute;
-  bottom: 29.2%;
-  left: 56.5%;
+  bottom: 26.2%;
+  left: 56%;
   transform: translateX(-50%);
   width: 60px;
   height: 28px;

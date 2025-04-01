@@ -1,11 +1,24 @@
 const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+// Add detailed environment variable logging
+console.log('=== Environment Variables Check ===');
+console.log('Current directory:', __dirname);
+console.log('Environment file path:', path.resolve(__dirname, '../.env'));
+console.log('TWILIO_ACCOUNT_SID:', process.env.TWILIO_ACCOUNT_SID ? 'Set' : 'Not set');
+console.log('TWILIO_AUTH_TOKEN:', process.env.TWILIO_AUTH_TOKEN ? 'Set' : 'Not set');
+console.log('SESSION_SECRET:', process.env.SESSION_SECRET ? 'Set' : 'Not set');
+console.log('GEMINI_API_KEY:', process.env.GEMINI_API_KEY ? 'Set' : 'Not set');
+console.log('WEBHOOK_URL:', process.env.WEBHOOK_URL || 'Not set');
+console.log('NODE_ENV:', process.env.NODE_ENV || 'Not set');
+console.log('================================');
 
 const multiPlayerModeHandler = require('./mode-controllers/multiplayer');
 const singlePlayerModeHandler = require('./mode-controllers/singleplayer');
 
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors');
 
 const { singlePlayerWelcomeMsg, serverErrorMsg } = require('./messages');
 const {
@@ -18,8 +31,12 @@ const {
 const app = express();
 const PORT = process.env.PORT || 4500;
 
+// Enable CORS
+app.use(cors());
+
 // Parse incoming Twilio request
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Session middleware
 app.use(session(sessionConfig));
@@ -34,13 +51,13 @@ app.use((req, res, next) => {
 });
 
 // Status callback endpoint for Twilio
-app.post('/status-callback', (req, res) => {
+app.post('/api/sms-webhook/status-callback', (req, res) => {
   console.log('Message status callback:', req.body);
   res.status(200).send('OK');
 });
 
 // The main endpoint where messages arrive
-app.post('/', async (req, res) => {
+app.post('/api/sms-webhook', async (req, res) => {
   console.log('=== Incoming Webhook Request ===');
   console.log('Request body:', req.body);
   console.log('Request headers:', req.headers);

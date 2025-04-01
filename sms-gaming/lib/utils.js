@@ -6,19 +6,38 @@ const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
 const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
 const WEBHOOK_URL = process.env.WEBHOOK_URL;
 
+console.log('=== Twilio Configuration Check ===');
+console.log('TWILIO_ACCOUNT_SID:', TWILIO_ACCOUNT_SID ? 'Set' : 'Not set');
+console.log('TWILIO_AUTH_TOKEN:', TWILIO_AUTH_TOKEN ? 'Set' : 'Not set');
+console.log('WEBHOOK_URL:', WEBHOOK_URL || 'Not set');
+console.log('================================');
+
 // Validate Twilio credentials before initializing the client
 if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
-  console.error('Error: Twilio credentials are missing. Please check your .env file.');
-  console.error('Make sure TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN are properly set.');
+  const error = new Error('Twilio credentials are missing. Please check your environment variables.');
+  error.code = 'MISSING_TWILIO_CREDENTIALS';
+  console.error('Error:', error.message);
+  console.error('Make sure TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN are properly set in your environment variables.');
+  throw error;
 }
 
 if (!WEBHOOK_URL) {
-  console.error('Error: WEBHOOK_URL is missing. Please check your .env file.');
+  const error = new Error('WEBHOOK_URL is missing. Please check your environment variables.');
+  error.code = 'MISSING_WEBHOOK_URL';
+  console.error('Error:', error.message);
   console.error('This is required for Twilio to know where to send messages.');
+  throw error;
 }
 
 // Initialize Twilio client with explicit parameters
-const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+let client;
+try {
+  client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+  console.log('Twilio client initialized successfully');
+} catch (error) {
+  console.error('Failed to initialize Twilio client:', error);
+  throw new Error('Failed to initialize Twilio client. Please check your credentials.');
+}
 
 const sendMessage = (res, req) => async message => {
   try {
