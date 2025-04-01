@@ -34,10 +34,10 @@
     --desk-color: #1a1a1a;
     --vw: 1vw;
     --vh: 1vh;
-    --screen-width: 395px;
-    --screen-height: 296px;
-    --screen-aspect-ratio: calc(var(--screen-width) / var(--screen-height));
-    --dynamic-screen-width: min(395px, calc(40 * var(--vw)));
+    --screen-width: 405px;
+    --screen-height: 300px;
+    --screen-aspect-ratio: 1.35;
+    --dynamic-screen-width: min(405px, calc(42 * var(--vw)));
     --dynamic-screen-height: calc(var(--dynamic-screen-width) / var(--screen-aspect-ratio));
     --screen-top: 49.5%;
     --screen-left: 50%;
@@ -142,66 +142,162 @@
   background: #000;
   border-radius: 4px;
   overflow: hidden;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
 }
 
-/* Zoom states - adjust to scale from center */
-.main-app-wrapper.zoomed-out {
-  transform: scale(var(--zoom-out-scale)) translate(0, 0);
+/* TV on/off animation states */
+.computer-screen.powered-off {
+  opacity: 0;
+  filter: brightness(0);
+  pointer-events: none;
 }
 
-.main-app-wrapper.zoomed-in {
-  transform: scale(var(--zoom-in-scale)) translate(0, 0);
-}
-
-/* On/Off Buttons */
-.on-off-buttons {
-  position: absolute;
-  bottom: 26%;
-  left: 56%;
-  transform: translateX(-50%);
-  width: 65px;
-  height: 30px;
-  z-index: 1000;
-  cursor: pointer;
+.computer-screen.powered-on {
   opacity: 1;
-  transition: opacity 0.3s ease;
-  display: grid;
-  grid-template-areas: 
-    "on"
-    "off";
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr;
-  gap: 0;
+  filter: brightness(1);
+  pointer-events: auto;
 }
 
-.computer-btn {
+.computer-screen.animating {
+  animation: tv-animation 0.6s ease-out;
+  animation-fill-mode: forwards;
+}
+
+/* Enhanced TV on/off animation - simplified and faster */
+@keyframes tv-animation {
+  0% {
+    opacity: 0;
+    filter: brightness(0) contrast(1);
+    transform: translate(-50%, -50%) scaleY(0.1);
+  }
+  20% {
+    opacity: 0.8;
+    filter: brightness(2) contrast(3) saturate(0.1);
+    transform: translate(-50%, -50%) scaleY(0.3) scaleX(1.02);
+  }
+  40% {
+    opacity: 1;
+    filter: brightness(2.5) contrast(2) saturate(0.5);
+    transform: translate(-50%, -50%) scaleY(0.9) scaleX(1.01);
+  }
+  60% {
+    opacity: 0.9;
+    filter: brightness(1.5) contrast(1.5) saturate(0.8);
+    transform: translate(-50%, -50%) scaleY(1) scaleX(1);
+  }
+  80% {
+    opacity: 1;
+    filter: brightness(1.2) contrast(1.2) saturate(1);
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1) contrast(1) saturate(1);
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* TV turn off animation */
+.computer-screen.powered-on.animating:not(.powered-off) {
+  animation: tv-turn-off 0.4s ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes tv-turn-off {
+  0% {
+    opacity: 1;
+    filter: brightness(1) contrast(1) saturate(1);
+    transform: translate(-50%, -50%);
+  }
+  30% {
+    opacity: 0.8;
+    filter: brightness(2) contrast(2) saturate(0.5);
+    transform: translate(-50%, -50%) scaleY(0.8) scaleX(1.01);
+  }
+  60% {
+    opacity: 0.4;
+    filter: brightness(2) contrast(3) saturate(0.3);
+    transform: translate(-50%, -50%) scaleY(0.4) scaleX(1.01);
+  }
+  100% {
+    opacity: 0;
+    filter: brightness(0) contrast(1) saturate(0);
+    transform: translate(-50%, -50%) scaleY(0.1) scaleX(1);
+  }
+}
+
+.screen-content {
   position: relative;
   width: 100%;
   height: 100%;
-  transition: opacity 0.3s ease;
-  object-fit: cover;
-}
-
-.computer-btn.on {
-  grid-area: on;
-  opacity: 1;
-}
-
-.computer-btn.off {
-  grid-area: off;
+  background-image: url('/background-computer.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
   opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+  overflow: hidden;
+  padding: max(10px, 3%);
+  box-sizing: border-box;
 }
 
-.zoomed-in .on-off-buttons {
+.powered-on .screen-content {
   opacity: 1;
+  transform: scale(1);
 }
 
-.zoomed-in .computer-btn.on {
+/* Add TV scan lines effect */
+.powered-on .screen-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.02) 50%,
+    rgba(0, 0, 0, 0.03) 50%,
+    rgba(0, 0, 0, 0.03) 100%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.5;
+}
+
+/* Add TV flicker effect - subtle */
+.powered-on .screen-content::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.01);
+  pointer-events: none;
+  z-index: 3;
   opacity: 0;
+  animation: flicker 0.5s infinite alternate;
 }
 
-.zoomed-in .computer-btn.off {
-  opacity: 1;
+@keyframes flicker {
+  0% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.03;
+  }
 }
 
 /* Desktop Icons */
@@ -377,17 +473,16 @@
   pointer-events: none;
 }
 
-.screen-content {
-  width: 100%;
-  height: 100%;
-  padding: clamp(10px, 2vmin, 20px);
-}
-
 /* Desktop Icons */
 .desktop-icons {
   display: flex;
   flex-wrap: wrap;
   gap: clamp(10px, 1.5vmin, 20px);
+  width: 100%;
+  height: 100%;
+  align-content: flex-start;
+  justify-content: flex-start;
+  padding: max(5px, 1%);
 }
 
 .icon {
@@ -527,16 +622,24 @@
   border-radius: 50%;
 }
 
-/* Media queries for different aspect ratios */
+/* Media queries for different aspect ratios - improve monitor sizing */
 @media (min-aspect-ratio: 16/9) {
   :root {
-    --dynamic-screen-width: min(395px, calc(35 * var(--vh)));
+    --dynamic-screen-width: min(405px, calc(38 * var(--vh)));
+    --screen-top: 49%;
   }
 }
 
 @media (max-aspect-ratio: 9/16) {
   :root {
-    --dynamic-screen-width: min(395px, calc(70 * var(--vw)));
+    --dynamic-screen-width: min(405px, calc(75 * var(--vw)));
+    --screen-top: 49%;
+  }
+}
+
+@media (min-width: 1024px) and (min-height: 768px) {
+  :root {
+    --dynamic-screen-width: min(420px, calc(42 * var(--vw)));
   }
 }
 
@@ -559,6 +662,93 @@
   :root {
     --zoom-out-scale: 1.15;
     --zoom-in-scale: 1.35;
+  }
+}
+
+/* Zoom states - adjust to scale from center */
+.main-app-wrapper.zoomed-out {
+  transform: scale(var(--zoom-out-scale)) translate(0, 0);
+}
+
+.main-app-wrapper.zoomed-in {
+  transform: scale(var(--zoom-in-scale)) translate(0, 0);
+}
+
+/* On/Off Buttons */
+.on-off-buttons {
+  position: absolute;
+  bottom: 29.2%;
+  left: 56.5%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 28px;
+  z-index: 1000;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  display: grid;
+  grid-template-areas: 
+    "on"
+    "off";
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-radius: 4px;
+}
+
+.computer-btn {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease;
+  object-fit: cover;
+}
+
+.computer-btn.on {
+  grid-area: on;
+  opacity: 1;
+}
+
+.computer-btn.off {
+  grid-area: off;
+  opacity: 0;
+}
+
+.zoomed-in .on-off-buttons {
+  opacity: 1;
+}
+
+.zoomed-in .computer-btn.on {
+  opacity: 0;
+}
+
+.zoomed-in .computer-btn.off {
+  opacity: 1;
+}
+
+/* Media adjustments for different screen sizes */
+@media (max-width: 1200px) {
+  .on-off-buttons {
+    bottom: 29%;
+    left: 56.2%;
+  }
+}
+
+@media (max-width: 768px) {
+  .on-off-buttons {
+    bottom: 29.5%;
+    left: 56.8%;
+    width: 55px;
+    height: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .on-off-buttons {
+    bottom: 29.7%;
+    left: 57%;
+    width: 50px;
+    height: 24px;
   }
 }
 
