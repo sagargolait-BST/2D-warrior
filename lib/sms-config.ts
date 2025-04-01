@@ -23,8 +23,9 @@ export const smsConfig = {
   
   // Webhook configuration (for Twilio)
   webhook: {
-    // This would be the actual deployed URL
-    // For local development, we use localhost
-    url: 'http://localhost:3000/api/sms-webhook'
+    // Use the deployed URL in production, localhost in development
+    url: process.env.NODE_ENV === 'production' 
+      ? 'https://sms-game-server.vercel.app/api/sms-webhook'
+      : 'http://localhost:3000/api/sms-webhook'
   }
 }; 
