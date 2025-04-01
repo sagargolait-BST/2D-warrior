@@ -38,6 +38,11 @@ const nextConfig = {
       },
     ];
   },
+  // Include SMS gaming files in the build
+  distDir: '.next',
+  generateBuildId: async () => {
+    return 'sms-gaming-build';
+  },
 };
 
 module.exports = nextConfig;

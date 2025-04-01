@@ -105,29 +105,22 @@ async function handleStartServer() {
   serverStartAttempts++;
 
   try {
-    // Install dependencies first
+    // Get the path to the SMS gaming server files
     const smsGamingPath = path.join(process.cwd(), 'sms-gaming');
-    console.log('Installing dependencies in:', smsGamingPath);
-    
-    try {
-      await execAsync('npm install', { cwd: smsGamingPath });
-      console.log('Dependencies installed successfully');
-    } catch (error) {
-      console.error('Error installing dependencies:', error);
-      throw error;
-    }
-
-    // Start the server with environment variables
     const serverPath = path.join(smsGamingPath, 'lib', 'app.js');
+
+    // Set up environment variables
     const env = { 
       ...process.env, 
       ...SMS_SERVER_ENV,
-      NODE_PATH: path.join(smsGamingPath, 'lib') // Add NODE_PATH to help with module resolution
+      NODE_PATH: path.join(smsGamingPath, 'lib'),
+      PORT: '4500' // Use a fixed port
     };
     
     console.log('Starting server with path:', serverPath);
     console.log('Environment:', env);
     
+    // Start the server
     serverProcess = exec(`node ${serverPath}`, { env }, (error, stdout, stderr) => {
       if (error) {
         console.error(`Server error: ${error}`);
