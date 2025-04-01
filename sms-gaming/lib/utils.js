@@ -7,6 +7,7 @@ const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
 const WEBHOOK_URL = process.env.WEBHOOK_URL;
 
 console.log('=== Twilio Configuration Check ===');
+console.log('Environment:', process.env.NODE_ENV || 'development');
 console.log('TWILIO_ACCOUNT_SID:', TWILIO_ACCOUNT_SID ? 'Set' : 'Not set');
 console.log('TWILIO_AUTH_TOKEN:', TWILIO_AUTH_TOKEN ? 'Set' : 'Not set');
 console.log('WEBHOOK_URL:', WEBHOOK_URL || 'Not set');

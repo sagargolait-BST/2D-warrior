@@ -1,16 +1,19 @@
 const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+// Only load .env file in development
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+}
 
 // Add detailed environment variable logging
 console.log('=== Environment Variables Check ===');
 console.log('Current directory:', __dirname);
-console.log('Environment file path:', path.resolve(__dirname, '../.env'));
+console.log('Environment:', process.env.NODE_ENV || 'development');
 console.log('TWILIO_ACCOUNT_SID:', process.env.TWILIO_ACCOUNT_SID ? 'Set' : 'Not set');
 console.log('TWILIO_AUTH_TOKEN:', process.env.TWILIO_AUTH_TOKEN ? 'Set' : 'Not set');
 console.log('SESSION_SECRET:', process.env.SESSION_SECRET ? 'Set' : 'Not set');
 console.log('GEMINI_API_KEY:', process.env.GEMINI_API_KEY ? 'Set' : 'Not set');
 console.log('WEBHOOK_URL:', process.env.WEBHOOK_URL || 'Not set');
-console.log('NODE_ENV:', process.env.NODE_ENV || 'Not set');
 console.log('================================');
 
 const multiPlayerModeHandler = require('./mode-controllers/multiplayer');
