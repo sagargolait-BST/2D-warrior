@@ -29,20 +29,7 @@ const nextConfig = {
     config.cache = false;
     return config;
   },
-  // Copy SMS gaming files to the output directory
-  async rewrites() {
-    return [
-      {
-        source: '/sms-gaming/:path*',
-        destination: '/sms-gaming/:path*',
-      },
-    ];
-  },
-  // Include SMS gaming files in the build
   distDir: '.next',
-  generateBuildId: async () => {
-    return 'sms-gaming-build';
-  },
 };
 
 module.exports = nextConfig;
