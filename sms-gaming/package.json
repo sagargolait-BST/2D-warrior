@@ -20,7 +20,6 @@
     "dotenv": "16.0.3",
     "express": "4.18.2",
     "express-session": "1.17.3",
-    "html-entities": "2.3.3",
     "serverless-http": "3.2.0",
     "twilio": "4.7.2"
   },
