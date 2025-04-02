@@ -1,4 +1,3 @@
-const superb = require('superb');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 // Initialize the Gemini API with proper error handling
