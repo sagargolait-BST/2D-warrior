@@ -5,6 +5,10 @@ try {
   const Hangman = require('./lib/games/Hangman');
   console.log('Hangman module loaded successfully!');
   
+  // Test EmojiTranslate module
+  const EmojiTranslate = require('./lib/games/EmojiTranslate');
+  console.log('EmojiTranslate module loaded successfully!');
+  
   // Test app module
   const app = require('./lib/app');
   console.log('App module loaded successfully!');
