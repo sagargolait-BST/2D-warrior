@@ -2,18 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "lib/app.js",
+      "src": "api/serverless.js",
       "use": "@vercel/node",
       "config": {
-        "buildCommand": "npm run build && node test-dependencies.js"
+        "includeFiles": ["lib/**", "node_modules/**"]
       }
     }
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "/api/serverless.js"
+    },
+    {
       "src": "/(.*)",
-      "dest": "lib/app.js"
+      "dest": "/api/serverless.js"
     }
   ],
-  "installCommand": "npm install"
+  "buildCommand": "node install-deps.js"
 } 

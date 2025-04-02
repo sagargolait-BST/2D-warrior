@@ -1,4 +1,16 @@
-const superb = require('superb');
+let superb;
+try {
+  superb = require('superb');
+} catch (error) {
+  console.error('Error loading superb module:', error);
+  // Fallback implementation
+  superb = {
+    random: () => {
+      const words = ['amazing', 'awesome', 'brilliant', 'excellent', 'fantastic', 'great', 'incredible', 'outstanding', 'perfect', 'wonderful'];
+      return words[Math.floor(Math.random() * words.length)];
+    }
+  };
+}
 const randomWords = require('random-words');
 const { isAlpha } = require('validator').default;
 

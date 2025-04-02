@@ -123,11 +123,17 @@ app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-  console.log('Environment:', process.env.NODE_ENV || 'development');
-  console.log('Twilio SID:', process.env.TWILIO_ACCOUNT_SID ? 'Set' : 'Not set');
-  console.log('Twilio Token:', process.env.TWILIO_AUTH_TOKEN ? 'Set' : 'Not set');
-  console.log('Gemini API Key:', process.env.GEMINI_API_KEY ? 'Set' : 'Not set');
-  console.log('Webhook URL:', process.env.WEBHOOK_URL || 'Not set');
-});
+// Only start the server if we're running directly (not being imported)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
+    console.log('Environment:', process.env.NODE_ENV || 'development');
+    console.log('Twilio SID:', process.env.TWILIO_ACCOUNT_SID ? 'Set' : 'Not set');
+    console.log('Twilio Token:', process.env.TWILIO_AUTH_TOKEN ? 'Set' : 'Not set');
+    console.log('Gemini API Key:', process.env.GEMINI_API_KEY ? 'Set' : 'Not set');
+    console.log('Webhook URL:', process.env.WEBHOOK_URL || 'Not set');
+  });
+} else {
+  // Export for serverless use
+  module.exports = app;
+}

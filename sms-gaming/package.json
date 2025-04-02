@@ -5,7 +5,9 @@
   "main": "lib/app.js",
   "scripts": {
     "start": "nodemon lib/app.js",
-    "build": "./vercel-build.sh"
+    "dev": "nodemon lib/app.js",
+    "build": "npm install && npm install superb@4.0.0 --save",
+    "vercel-build": "node install-deps.js"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -14,22 +16,22 @@
   "author": "Sagar Golait",
   "license": "MIT",
   "dependencies": {
-    "@google/generative-ai": "^0.24.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "express-session": "^1.17.3",
-    "html-entities": "^2.3.3",
-    "moji-translate": "^1.0.8",
-    "random-words": "^1.2.1",
-    "serverless-http": "^3.2.0",
-    "superb": "^4.0.0",
-    "twilio": "^4.7.2",
-    "txtgen": "^3.0.4",
-    "validator": "^13.9.0"
+    "@google/generative-ai": "0.24.0",
+    "cors": "2.8.5",
+    "dotenv": "16.0.3",
+    "express": "4.18.2",
+    "express-session": "1.17.3",
+    "html-entities": "2.3.3",
+    "moji-translate": "1.0.8",
+    "random-words": "1.2.1",
+    "serverless-http": "3.2.0",
+    "superb": "4.0.0",
+    "twilio": "4.7.2",
+    "txtgen": "3.0.4",
+    "validator": "13.9.0"
   },
   "devDependencies": {
-    "eslint": "^8.34.0",
-    "nodemon": "^2.0.20"
+    "eslint": "8.34.0",
+    "nodemon": "2.0.20"
   }
 }
