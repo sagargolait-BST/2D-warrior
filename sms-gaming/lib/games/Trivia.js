@@ -1,7 +1,18 @@
-const superb = require('superb');
 const { shuffleArray, alphabet } = require('./utils');
-
 const { decode } = require('html-entities');
+
+const positiveFeedback = [
+  "Excellent!",
+  "Great job!",
+  "Well done!",
+  "Perfect!",
+  "Amazing!",
+  "Brilliant!",
+  "Fantastic!",
+  "Outstanding!",
+  "Superb!",
+  "Terrific!"
+];
 
 class Trivia {
   static name = 'Trivia';
@@ -75,7 +86,10 @@ class Trivia {
 
     if (numOfCorrectAnswers < 2) return `☹️ ${ratio} Better luck next time.`;
     else if (numOfCorrectAnswers < 4) return `😐 ${ratio} Could be better.`;
-    else return `😀 ${ratio} ${superb.random()}!`;
+    else {
+      const randomFeedback = positiveFeedback[Math.floor(Math.random() * positiveFeedback.length)];
+      return `😀 ${ratio} ${randomFeedback}`;
+    }
   }
 
   handleUserResponse(answer) {
