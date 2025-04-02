@@ -1,4 +1,8 @@
-const { isAlpha } = require('validator').default;
+// Remove all external dependencies and implement everything directly
+// Simple isAlpha function to replace validator
+function isAlpha(str) {
+  return /^[a-zA-Z]+$/.test(str);
+}
 
 // Simple word list for Hangman game
 const wordList = [

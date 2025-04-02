@@ -24,8 +24,7 @@
     "moji-translate": "1.0.8",
     "serverless-http": "3.2.0",
     "twilio": "4.7.2",
-    "txtgen": "3.0.4",
-    "validator": "13.9.0"
+    "txtgen": "3.0.4"
   },
   "devDependencies": {
     "eslint": "8.34.0",
