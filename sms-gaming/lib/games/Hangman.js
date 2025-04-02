@@ -1,18 +1,18 @@
-let superb;
-try {
-  superb = require('superb');
-} catch (error) {
-  console.error('Error loading superb module:', error);
-  // Fallback implementation
-  superb = {
-    random: () => {
-      const words = ['amazing', 'awesome', 'brilliant', 'excellent', 'fantastic', 'great', 'incredible', 'outstanding', 'perfect', 'wonderful'];
-      return words[Math.floor(Math.random() * words.length)];
-    }
-  };
-}
-const randomWords = require('random-words');
 const { isAlpha } = require('validator').default;
+
+// Simple word list for Hangman game
+const wordList = [
+  'APPLE', 'BANANA', 'CHERRY', 'DONUT', 'EAGLE', 'FLOWER', 'GRAPE', 'HORSE',
+  'IGUANA', 'JACKET', 'KANGAROO', 'LEMON', 'MONKEY', 'NEST', 'ORANGE', 'PENGUIN',
+  'QUEEN', 'RABBIT', 'SNAKE', 'TIGER', 'UMBRELLA', 'VIOLIN', 'WALRUS', 'XRAY',
+  'YELLOW', 'ZEBRA'
+];
+
+// Simple superb words for game completion
+const superbWords = [
+  'amazing', 'awesome', 'brilliant', 'excellent', 'fantastic', 'great', 
+  'incredible', 'outstanding', 'perfect', 'wonderful'
+];
 
 class Hangman {
   static name = 'Hangman';
@@ -20,10 +20,18 @@ class Hangman {
   constructor(gameId) {
     this.state = 'play';
     this.gameId = gameId;
-    this.word = randomWords().toUpperCase();
+    this.word = this.getRandomWord();
     this.numOfFailedAttempts = 0;
     this.maxNumOfFailedAttemts = 5;
     this.guessedLetters = new Set();
+  }
+
+  getRandomWord() {
+    return wordList[Math.floor(Math.random() * wordList.length)];
+  }
+
+  getRandomSuperbWord() {
+    return superbWords[Math.floor(Math.random() * superbWords.length)];
   }
 
   get welcomeMessage() {
@@ -96,7 +104,7 @@ class Hangman {
 
     if (this.hasUserWon) {
       this.state = 'gameover';
-      return [this.gameMessage, `💯 ${superb.random()}!`];
+      return [this.gameMessage, `💯 ${this.getRandomSuperbWord()}!`];
     }
 
     if (!word.includes(userMessage)) this.numOfFailedAttempts++;
