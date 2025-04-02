@@ -5,7 +5,7 @@
   "main": "lib/app.js",
   "scripts": {
     "start": "nodemon lib/app.js",
-    "build": "npm install"
+    "build": "./vercel-build.sh"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "lib/app.js",
+      "use": "@vercel/node",
+      "config": {
+        "buildCommand": "npm run build && node test-dependencies.js"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "lib/app.js"
+    }
+  ],
+  "installCommand": "npm install"
+} 
