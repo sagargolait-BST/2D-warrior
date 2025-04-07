@@ -23,7 +23,7 @@ export default function SMSGamePage() {
           </div>
         )}
         <iframe
-          src="https://sms-game.vercel.app/"
+          src="https://whatsapp-gaming.onrender.com/"
           className="w-full h-full"
           onLoad={() => setIsLoading(false)}
           onError={() => {
